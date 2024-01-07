@@ -117,20 +117,31 @@ namespace FileDirectory
             {
                 // Lấy dường dẫn của Item
                 string path = DataList[selectedIndex].Path;
-     
-                // Check File có tồn tại trong ổ đĩa ko
-                if (File.Exists(path))
+                // Check đường dẫn nó là file hay Derictory
+
+
+                if (IsDirectory(path) && Directory.Exists(path))
                 {
-                    var result= MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes) {
-                        File.Delete(path);
+                    var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Directory.Delete(path);
                         DataList.RemoveAt(selectedIndex);
                         lv_listfile.ItemsSource = null;
                         lv_listfile.ItemsSource = DataList;
                     }
                 }
-                else {
-                    MessageBox.Show("No File Fould", "Error");
+
+                if (IsDirectory(path) == false && File.Exists(path))
+                {
+                    var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        File.Delete(path);
+                        DataList.RemoveAt(selectedIndex);
+                        lv_listfile.ItemsSource = null;
+                        lv_listfile.ItemsSource = DataList;
+                    }
                 }
             }
             else {
@@ -141,6 +152,28 @@ namespace FileDirectory
 
         }
 
+         public static bool IsDirectory(string path)
+    {
+        try
+        {
+            // Kiểm tra xem path có phải là một thư mục không
+            FileAttributes attr = File.GetAttributes(path);
+            return (attr & FileAttributes.Directory) == FileAttributes.Directory;
+        }
+        catch (Exception)
+        {
+            // Xảy ra lỗi khi kiểm tra, giả sử không phải là thư mục
+            return false;
+        }
+    }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = lv_listfile.SelectedIndex;
+            var itemRename = DataList[selectedIndex];
+            Window1 newName = new Window1(itemRename.Path, itemRename.Name);
+            newName.ShowDialog();
+            
+        }
     }
 }

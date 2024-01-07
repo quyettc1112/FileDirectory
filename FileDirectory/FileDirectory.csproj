@@ -8,4 +8,9 @@
     <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="SuperSocket.ClientEngine.Core" Version="0.10.0" />
+  </ItemGroup>
+
 </Project>

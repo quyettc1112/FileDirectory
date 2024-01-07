@@ -1,0 +1,14 @@
+﻿<Window x:Class="FileDirectory.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileDirectory"
+        mc:Ignorable="d"
+        Title="Window1" Height="200" Width="500">
+    <Grid>
+        <TextBox x:Name="tb_newpath" HorizontalAlignment="Center" Margin="0,33,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="424" FontSize="24"/>
+        <Button Content="Save" HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" FontSize="20" Width="95" Click="Button_Click"/>
+
+    </Grid>
+</Window>

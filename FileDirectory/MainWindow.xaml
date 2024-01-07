@@ -45,7 +45,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="76,61,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top" FontSize="24"/>
         <Button Content="Add File" HorizontalAlignment="Left" Margin="745,151,0,0" VerticalAlignment="Top" FontSize="20"/>
         <Button Content="Delete" HorizontalAlignment="Left" Margin="752,230,0,0" VerticalAlignment="Top" FontSize="20" Click="Button_Click"/>
-        <Button Content="Rename" HorizontalAlignment="Left" Margin="745,303,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <Button Content="Rename" HorizontalAlignment="Left" Margin="745,303,0,0" VerticalAlignment="Top" FontSize="20" Click="Button_Click_1"/>
 
     </Grid>
 </Window>
