@@ -90,8 +90,10 @@ namespace FileDirectory
             }
             else {
                 MessageBox.Show("Cancel select file","Cancel");
+               
+                DataList.Clear();
+                lv_listfile.ItemsSource = DataList;
                 tb_filedirectory.Text = "";
-                lv_listfile.Items.Clear();
             }
         }
 
@@ -106,5 +108,39 @@ namespace FileDirectory
             public string Name { get; set; }
             public string Icon { get; set; }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = lv_listfile.SelectedIndex;
+
+            if (lv_listfile.SelectedIndex != -1)
+            {
+                // Lấy dường dẫn của Item
+                string path = DataList[selectedIndex].Path;
+     
+                // Check File có tồn tại trong ổ đĩa ko
+                if (File.Exists(path))
+                {
+                    var result= MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes) {
+                        File.Delete(path);
+                        DataList.RemoveAt(selectedIndex);
+                        lv_listfile.ItemsSource = null;
+                        lv_listfile.ItemsSource = DataList;
+                    }
+                }
+                else {
+                    MessageBox.Show("No File Fould", "Error");
+                }
+            }
+            else {
+                MessageBox.Show("Select File To Delete", "Error");
+            }
+           
+
+
+        }
+
+
     }
 }
