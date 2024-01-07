@@ -12,21 +12,33 @@
         <ListView x:Name="lv_listfile" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="76,126,76,42" Height="NaN" Width="NaN" MouseDoubleClick="lv_listfile_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Folder">
+
+                    <GridViewColumn Header="Type">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <!-- Đặt một Image vào đây để hiển thị icon -->
-                                    <Image Source="{Binding Path=FolderIcon}" Width="16" Height="16"/>
-                                    <TextBlock Text="{Binding Path=FolderName}" Margin="5,0,0,0"/>
+                                    <Image Source="{Binding Path=Icon}" Width="16" Height="16"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
 
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Đặt một Image vào đây để hiển thị icon -->
+                                   
+                                    <TextBlock Text="{Binding Path=Name}" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
 
-                    <GridViewColumn Header="FileName" DisplayMemberBinding="{Binding Path=FileName}"/>
+                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}"/>
                 </GridView>
             </ListView.View>
         </ListView>
