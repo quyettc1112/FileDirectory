@@ -25,8 +25,8 @@ namespace FileDirectory
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-        
 
+        Winforms.FolderBrowserDialog dialog = new Winforms.FolderBrowserDialog();
 
         public ObservableCollection<MyData> DataList { get; set; }
         public MainWindow()
@@ -36,6 +36,7 @@ namespace FileDirectory
 
         }
 
+        string path = string.Empty;
         private void btn_name_Click(object sender, RoutedEventArgs e)
         {
 
@@ -56,36 +57,12 @@ namespace FileDirectory
             if (dialogResult == Winforms.DialogResult.OK)
             {
 
-                string path = dialog.SelectedPath;
+                path = dialog.SelectedPath;
                 tb_filedirectory.Text = path;
 
                 try
                 {
-                    string[] files = Directory.GetFiles(path);
-                    string[] folder = Directory.GetDirectories(path);
-
-
-                    foreach (string file in folder)
-                    {
-                        string[] result = file.Split('\\');
-                        DataList.Add(new MyData
-                        {
-                            Name = $"{result[result.Length - 1]}",
-                            Path = $"{file}",
-                            Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\vector-folder-icon.jpg"
-                        });
-                    };
-
-                    foreach (string file in files)
-                    {
-                        string[] result = file.Split('\\');
-                        DataList.Add(new MyData {
-                            Name = $"{result[result.Length - 1]}",
-                            Path = $"{file}",
-                            Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\file-icon.png"
-                        });
-                    };
-                    lv_listfile.ItemsSource = DataList;
+                    ReadFileorFolder(path);
 
                 }
                 catch (Exception ex)
@@ -157,6 +134,39 @@ namespace FileDirectory
 
         }
 
+
+        public void ReadFileorFolder(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            string[] folder = Directory.GetDirectories(path);
+            DataList.Clear();
+
+            foreach (string file in folder)
+            {
+                string[] result = file.Split('\\');
+                DataList.Add(new MyData
+                {
+                    Name = $"{result[result.Length - 1]}",
+                    Path = $"{file}",
+                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\vector-folder-icon.jpg"
+                });
+            };
+
+            foreach (string file in files)
+            {
+                string[] result = file.Split('\\');
+                DataList.Add(new MyData
+                {
+                    Name = $"{result[result.Length - 1]}",
+                    Path = $"{file}",
+                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\file-icon.png"
+                });
+            };
+            lv_listfile.ItemsSource = DataList;
+
+
+        }
+
         public static bool IsDirectory(string path)
         {
             try
@@ -175,19 +185,22 @@ namespace FileDirectory
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             int selectedIndex = lv_listfile.SelectedIndex;
-            var itemRename = DataList[selectedIndex];
-            Window1 newName = new Window1(itemRename.Path, itemRename.Name);
-            newName.Closing += (s, ea) =>
-            { 
-                ReloadData();
+            if (selectedIndex != -1) {
+                var itemRename = DataList[selectedIndex];
+                Window1 newName = new Window1(itemRename.Path, itemRename.Name);
+                newName.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
 
-            };
-            newName.Show();
+                };
+                newName.Show();
+            } 
+            
 
 
         }
 
-        public void ReloadData() { 
+        public void ReloadData() {
             
         }
 
