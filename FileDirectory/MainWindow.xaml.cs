@@ -81,7 +81,16 @@ namespace FileDirectory
 
         private void lv_listfile_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string selected = lv_listfile.SelectedItem.ToString();
+            int selectedIndex = lv_listfile.SelectedIndex;        
+            string pathToOpen = DataList[selectedIndex].Path;
+            tb_filedirectory.Text = pathToOpen;
+            path = pathToOpen;
+            if (IsDirectory(path) == true) {
+                ReadFileorFolder(path);
+            }
+             
+
+
         }
 
         public class MyData
@@ -167,6 +176,8 @@ namespace FileDirectory
 
         }
 
+        
+
         public static bool IsDirectory(string path)
         {
             try
@@ -191,7 +202,7 @@ namespace FileDirectory
                 newName.Closing += (s, ea) =>
                 {
                     ReadFileorFolder(path);
-
+                    tb_filedirectory.Text = path;
                 };
                 newName.Show();
             } 
@@ -200,10 +211,32 @@ namespace FileDirectory
 
         }
 
-        public void ReloadData() {
-            
-        }
+  
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
 
-     
+
+
+            // C:// a/b/c
+            string[] pathArray = path.Split('\\');
+            string result = "";
+            if (pathArray.Length > 1) {
+                for (int i = 0; i < pathArray.Length - 1; i++)
+                {
+                    if (i == pathArray.Length - 2)
+                    {
+                        result = result + pathArray[i];
+                    }
+                    else
+                        result = result + pathArray[i] + "\\";
+                }
+                path = result;
+                tb_filedirectory.Text = path;
+                ReadFileorFolder(path);
+            }
+
+            
+
+        }
     }
 }
