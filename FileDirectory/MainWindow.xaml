@@ -14,9 +14,9 @@
             <ColumnDefinition Width="568*"/>
             <ColumnDefinition Width="106*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tb_filedirectory" HorizontalAlignment="Left" Margin="141,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="465" FontSize="16" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Button x:Name="btn_name" Content="Browser" HorizontalAlignment="Left" Margin="479,31,0,0" VerticalAlignment="Top" Height="35" Width="69" Click="btn_name_Click" Grid.Column="3"/>
-        <ListView x:Name="lv_listfile" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="59,126,20,42" Height="NaN" Width="NaN" MouseDoubleClick="lv_listfile_MouseDoubleClick" Grid.ColumnSpan="2" Grid.Column="2">
+        <TextBox x:Name="tb_filedirectory" HorizontalAlignment="Left" Margin="141,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="550" FontSize="16" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Button x:Name="btn_name" Content="Browser" HorizontalAlignment="Left" Margin="564,34,0,0" VerticalAlignment="Top" Height="35" Width="69" Click="btn_name_Click" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <ListView x:Name="lv_listfile" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="59,126,41,42" Height="NaN" Width="NaN" MouseDoubleClick="lv_listfile_MouseDoubleClick" Grid.ColumnSpan="3" Grid.Column="2">
             <ListView.View>
                 <GridView>
 
@@ -50,10 +50,11 @@
             </ListView.View>
         </ListView>
         <TextBlock HorizontalAlignment="Left" Margin="59,31,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top" FontSize="24" Grid.Column="2"/>
-        <Button Content="Add File" HorizontalAlignment="Left" Margin="1,151,0,0" VerticalAlignment="Top" FontSize="20" Grid.Column="4"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="8,230,0,0" VerticalAlignment="Top" FontSize="20" Click="Button_Click" Grid.Column="4"/>
-        <Button Content="Rename" HorizontalAlignment="Left" Margin="1,303,0,0" VerticalAlignment="Top" FontSize="20" Click="Button_Click_1" Grid.Column="4"/>
+        <Button Content="Add File" HorizontalAlignment="Left" Margin="10,397,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="Button_Click_3"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="15,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click" Grid.Column="4"/>
+        <Button Content="Rename" HorizontalAlignment="Left" Margin="99,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_1" Grid.Column="3"/>
         <Button Grid.Column="2" Content="Back" HorizontalAlignment="Left" Margin="59,91,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        <Button Grid.Column="2" Content="Add Folder" HorizontalAlignment="Left" Margin="59,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_4"/>
 
     </Grid>
 </Window>

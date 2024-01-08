@@ -56,10 +56,8 @@ namespace FileDirectory
 
             if (dialogResult == Winforms.DialogResult.OK)
             {
-
                 path = dialog.SelectedPath;
                 tb_filedirectory.Text = path;
-
                 try
                 {
                     ReadFileorFolder(path);
@@ -83,14 +81,14 @@ namespace FileDirectory
         {
             int selectedIndex = lv_listfile.SelectedIndex;        
             string pathToOpen = DataList[selectedIndex].Path;
+
+            
             tb_filedirectory.Text = pathToOpen;
             path = pathToOpen;
             if (IsDirectory(path) == true) {
                 ReadFileorFolder(path);
             }
-             
-
-
+            
         }
 
         public class MyData
@@ -138,9 +136,6 @@ namespace FileDirectory
             else {
                 MessageBox.Show("Select File To Delete", "Error");
             }
-
-
-
         }
 
 
@@ -220,7 +215,8 @@ namespace FileDirectory
             // C:// a/b/c
             string[] pathArray = path.Split('\\');
             string result = "";
-            if (pathArray.Length > 1) {
+            if (pathArray.Length > 1)
+            {
                 for (int i = 0; i < pathArray.Length - 1; i++)
                 {
                     if (i == pathArray.Length - 2)
@@ -234,9 +230,39 @@ namespace FileDirectory
                 tb_filedirectory.Text = path;
                 ReadFileorFolder(path);
             }
+        }
 
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            //MessageBoxResult result = MessageBox.Show("Create Folder:", "Create", MessageBoxButton.YesNo, MessageBoxImage.Question);
             
+            if (path != string.Empty)
+            {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, false);
 
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+           
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+
+            if (path != string.Empty) {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, true);
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+            
         }
     }
 }
