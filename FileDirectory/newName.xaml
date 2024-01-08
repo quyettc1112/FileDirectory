@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileDirectory"
         mc:Ignorable="d"
-        Title="Window1" Height="200" Width="500">
+        Title="Window1" Height="200" Width="500" Closing="Window_Closing">
     <Grid>
-        <TextBox x:Name="tb_newpath" HorizontalAlignment="Center" Margin="0,33,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="424" FontSize="24"/>
-        <Button Content="Save" HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" FontSize="20" Width="95" Click="Button_Click"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="403*"/>
+            <ColumnDefinition Width="19*"/>
+            <ColumnDefinition Width="78*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="tb_newpath" HorizontalAlignment="Left" Margin="38,33,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="424" FontSize="24" Grid.ColumnSpan="3"/>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="163,118,0,0" VerticalAlignment="Top" FontSize="20" Width="96" Click="Button_Click"/>
 
     </Grid>
 </Window>

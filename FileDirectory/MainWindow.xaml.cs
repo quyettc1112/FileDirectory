@@ -15,51 +15,56 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Collections.ObjectModel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Forms.Integration;
 
 namespace FileDirectory
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
+        
+
 
         public ObservableCollection<MyData> DataList { get; set; }
         public MainWindow()
         {
             InitializeComponent();
             tb_filedirectory.Text = "";
+
         }
 
         private void btn_name_Click(object sender, RoutedEventArgs e)
         {
-            
+
             tb_filedirectory.Text = "";
-           
+
             DataList = new ObservableCollection<MyData>
             {
 
 
             };
             DataList.Clear();
-      
- 
+
+
 
             Winforms.FolderBrowserDialog dialog = new Winforms.FolderBrowserDialog();
             Winforms.DialogResult dialogResult = dialog.ShowDialog();
 
             if (dialogResult == Winforms.DialogResult.OK)
             {
-            
+
                 string path = dialog.SelectedPath;
                 tb_filedirectory.Text = path;
-         
+
                 try
                 {
                     string[] files = Directory.GetFiles(path);
                     string[] folder = Directory.GetDirectories(path);
-                    
-                
+
+
                     foreach (string file in folder)
                     {
                         string[] result = file.Split('\\');
@@ -70,18 +75,18 @@ namespace FileDirectory
                             Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\vector-folder-icon.jpg"
                         });
                     };
-                  
+
                     foreach (string file in files)
                     {
                         string[] result = file.Split('\\');
                         DataList.Add(new MyData {
-                            Name = $"{result[result.Length - 1]}", 
+                            Name = $"{result[result.Length - 1]}",
                             Path = $"{file}",
                             Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\file-icon.png"
                         });
                     };
                     lv_listfile.ItemsSource = DataList;
-    
+
                 }
                 catch (Exception ex)
                 {
@@ -89,8 +94,8 @@ namespace FileDirectory
                 }
             }
             else {
-                MessageBox.Show("Cancel select file","Cancel");
-               
+                MessageBox.Show("Cancel select file", "Cancel");
+
                 DataList.Clear();
                 lv_listfile.ItemsSource = DataList;
                 tb_filedirectory.Text = "";
@@ -99,7 +104,7 @@ namespace FileDirectory
 
         private void lv_listfile_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string selected = lv_listfile.SelectedItem.ToString();  
+            string selected = lv_listfile.SelectedItem.ToString();
         }
 
         public class MyData
@@ -147,33 +152,45 @@ namespace FileDirectory
             else {
                 MessageBox.Show("Select File To Delete", "Error");
             }
-           
+
 
 
         }
 
-         public static bool IsDirectory(string path)
-    {
-        try
+        public static bool IsDirectory(string path)
         {
-            // Kiểm tra xem path có phải là một thư mục không
-            FileAttributes attr = File.GetAttributes(path);
-            return (attr & FileAttributes.Directory) == FileAttributes.Directory;
+            try
+            {
+                // Kiểm tra xem path có phải là một thư mục không
+                FileAttributes attr = File.GetAttributes(path);
+                return (attr & FileAttributes.Directory) == FileAttributes.Directory;
+            }
+            catch (Exception)
+            {
+                // Xảy ra lỗi khi kiểm tra, giả sử không phải là thư mục
+                return false;
+            }
         }
-        catch (Exception)
-        {
-            // Xảy ra lỗi khi kiểm tra, giả sử không phải là thư mục
-            return false;
-        }
-    }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             int selectedIndex = lv_listfile.SelectedIndex;
             var itemRename = DataList[selectedIndex];
             Window1 newName = new Window1(itemRename.Path, itemRename.Name);
-            newName.ShowDialog();
+            newName.Closing += (s, ea) =>
+            { 
+                ReloadData();
+
+            };
+            newName.Show();
+
+
+        }
+
+        public void ReloadData() { 
             
         }
+
+     
     }
 }
