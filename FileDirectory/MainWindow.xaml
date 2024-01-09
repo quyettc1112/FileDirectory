@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileDirectory"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="850">
+        Title="MainWindow" Height="500" Width="850">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*"/>
@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="tb_filedirectory" HorizontalAlignment="Left" Margin="141,36,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="550" FontSize="16" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Button x:Name="btn_name" Content="Browser" HorizontalAlignment="Left" Margin="564,34,0,0" VerticalAlignment="Top" Height="35" Width="69" Click="btn_name_Click" Grid.Column="3" Grid.ColumnSpan="2"/>
-        <ListView x:Name="lv_listfile" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="59,126,41,42" Height="NaN" Width="NaN" MouseDoubleClick="lv_listfile_MouseDoubleClick" Grid.ColumnSpan="3" Grid.Column="2">
+        <ListView x:Name="lv_listfile" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="59,126,41,92" Height="NaN" Width="NaN" MouseDoubleClick="lv_listfile_MouseDoubleClick" Grid.ColumnSpan="3" Grid.Column="2">
             <ListView.View>
                 <GridView>
 
@@ -50,11 +50,11 @@
             </ListView.View>
         </ListView>
         <TextBlock HorizontalAlignment="Left" Margin="59,31,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top" FontSize="24" Grid.Column="2"/>
-        <Button Content="Add File" HorizontalAlignment="Left" Margin="10,397,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="Button_Click_3"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="15,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click" Grid.Column="4"/>
-        <Button Content="Rename" HorizontalAlignment="Left" Margin="99,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_1" Grid.Column="3"/>
+        <Button Content="Add File" HorizontalAlignment="Left" Margin="10,416,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="Button_Click_3"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="15,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click" Grid.Column="4"/>
+        <Button Content="Rename" HorizontalAlignment="Left" Margin="99,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_1" Grid.Column="3"/>
         <Button Grid.Column="2" Content="Back" HorizontalAlignment="Left" Margin="59,91,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Grid.Column="2" Content="Add Folder" HorizontalAlignment="Left" Margin="59,397,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_4"/>
+        <Button Grid.Column="2" Content="Add Folder" HorizontalAlignment="Left" Margin="59,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_4"/>
 
     </Grid>
 </Window>

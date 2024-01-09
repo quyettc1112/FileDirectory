@@ -152,7 +152,7 @@ namespace FileDirectory
                 {
                     Name = $"{result[result.Length - 1]}",
                     Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\vector-folder-icon.jpg"
+                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\vector-folder-icon.jpg"
                 });
             };
 
@@ -163,7 +163,7 @@ namespace FileDirectory
                 {
                     Name = $"{result[result.Length - 1]}",
                     Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\file-icon.png"
+                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\filesIcon.jfif"
                 });
             };
             lv_listfile.ItemsSource = DataList;
