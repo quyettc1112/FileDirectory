@@ -86,8 +86,21 @@ namespace FileDirectory
             if (IsDirectory(path) == true) {
                 ReadFileorFolder(path);
             }
+            if (IsImageFile(path)) {
+                Picture pt = new Picture(path, DataList[selectedIndex].Name);
+                pt.ShowDialog();
+
+               
+            }
             
         }
+        public static bool IsImageFile(string filePath)
+        {
+            // Check if the file has a ".png" extension
+            string extension = System.IO.Path.GetExtension(filePath);
+            return string.Equals(extension, ".png", StringComparison.OrdinalIgnoreCase);
+        }
+
 
         public class MyData
         {
@@ -174,7 +187,7 @@ namespace FileDirectory
         private void btn_addFolder_Click(object sender, RoutedEventArgs e)
         {
 
-            if (path != string.Empty)
+            if (path != string.Empty )
             {
                 newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, true);
                 nfof.Closing += (s, ea) =>
@@ -257,6 +270,7 @@ namespace FileDirectory
                     var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
+                        
                         File.Delete(path);
                         DataList.RemoveAt(selectedIndex);
                         lv_listfile.ItemsSource = null;

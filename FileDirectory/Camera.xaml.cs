@@ -109,7 +109,7 @@ namespace FileDirectory
         {
             if (videoSource != null && videoSource.IsRunning)
             {
-               videoSource.Stop();
+              // videoSource.Stop();
 
             }
         }
@@ -219,33 +219,55 @@ namespace FileDirectory
             {
                 ReadFileorFolder(Path);
             }
+
+            if (IsImageFile(Path))
+            {
+                Picture pt = new Picture(Path, DataList[selectedIndex].Name);
+                pt.Show();
+            }
         }
 
         private void btn_capture_Click(object sender, RoutedEventArgs e)
         {
             if (videoSource != null && videoSource.IsRunning)
             {
-                // Dừng việc chụp hình tạm thời
 
-                // Kiểm tra xem folder đã được chọn chưa
-                if (!string.IsNullOrWhiteSpace(Path) &&
-                    !string.IsNullOrWhiteSpace(tb_folderpath.Text)
-                    )
+                if (IsImageFile(Path))
                 {
-                    // Tạo đường dẫn lưu ảnh
-                    string fileName = $"snapshot_{DateTime.Now:yyyyMMddHHmmss}.png";
-                    string filePath = System.IO.Path.Combine(Path, fileName);
-
-                    currentFrame.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
-                    System.Windows.MessageBox.Show($"Snapshot saved to {filePath}");
-                    ReadFileorFolder(Path);
+                    string[] pathArray = Path.Split('\\');
+                    string result = "";
+                    if (pathArray.Length > 1)
+                    {
+                        for (int i = 0; i < pathArray.Length - 1; i++)
+                        {
+                            if (i == pathArray.Length - 2)
+                            {
+                                result = result + pathArray[i];
+                            }
+                            else
+                                result = result + pathArray[i] + "\\";
+                        }
+                        Path = result;
+                        tb_folderpath.Text = Path;
+                    }
                 }
-                else
-                {
-                    System.Windows.MessageBox.Show("Please select a folder before capturing a snapshot.");
-                }
+                else {
+                    if (!string.IsNullOrWhiteSpace(Path) &&
+                        !string.IsNullOrWhiteSpace(tb_folderpath.Text))
+                    {
+                        // Tạo đường dẫn lưu ảnh
+                        string fileName = $"snapshot_{DateTime.Now:yyyyMMddHHmmss}.png";
+                        string filePath = System.IO.Path.Combine(Path, fileName);
 
-                // Bắt đầu lại việc chụp hình từ webcam
+                        currentFrame.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                        System.Windows.MessageBox.Show($"Snapshot saved to {filePath}");
+                        ReadFileorFolder(Path);
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("Please select a folder before capturing a snapshot.");
+                    }
+                }
             }
             else
             {
