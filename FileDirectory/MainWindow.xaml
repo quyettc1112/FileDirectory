@@ -50,11 +50,12 @@
             </ListView.View>
         </ListView>
         <TextBlock HorizontalAlignment="Left" Margin="59,31,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top" FontSize="24" Grid.Column="2"/>
-        <Button Content="Add File" HorizontalAlignment="Left" Margin="10,416,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="Button_Click_3"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="15,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click" Grid.Column="4"/>
-        <Button Content="Rename" HorizontalAlignment="Left" Margin="99,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_1" Grid.Column="3"/>
+        <Button x:Name="btn_addFile" Content="Add File" HorizontalAlignment="Left" Margin="10,416,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="btn_addFile_Click"/>
+        <Button x:Name="btn_delete" Content="Delete" HorizontalAlignment="Left" Margin="15,416,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="4" Click="btn_delete_Click"/>
+        <Button x:Name="btn_rename" Content="Rename" HorizontalAlignment="Left" Margin="99,416,0,0" VerticalAlignment="Top" FontSize="16" Grid.Column="3" Click="btn_rename_Click"/>
         <Button Grid.Column="2" Content="Back" HorizontalAlignment="Left" Margin="59,91,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Grid.Column="2" Content="Add Folder" HorizontalAlignment="Left" Margin="59,416,0,0" VerticalAlignment="Top" FontSize="16" Click="Button_Click_4"/>
+        <Button x:Name="btn_addFolder" Grid.Column="2" Content="Add Folder" HorizontalAlignment="Left" Margin="59,416,0,0" VerticalAlignment="Top" FontSize="16" Click="btn_addFolder_Click"/>
+        <Button x:Name="btn_opneCamera" Grid.Column="3" Content="Camera" HorizontalAlignment="Left" Margin="206,416,0,0" VerticalAlignment="Top" FontSize="16" Click="btn_opneCamera_Click"/>
 
     </Grid>
 </Window>

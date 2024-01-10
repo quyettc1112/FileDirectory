@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileDirectory"
         mc:Ignorable="d"
-        Title="Window1" Height="200" Width="500" Closing="Window_Closing">
+        Title="Rename" Height="200" Width="500" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="403*"/>
