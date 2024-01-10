@@ -121,7 +121,7 @@ namespace FileDirectory
                 {
                     Name = $"{result[result.Length - 1]}",
                     Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\FileeefilesIcon.jfif"
+                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\filesIcon.jfif"
                 });
             };
             lv_listfile.ItemsSource = DataList;
@@ -232,14 +232,24 @@ namespace FileDirectory
 
                 if (IsDirectory(path) && Directory.Exists(path))
                 {
-                    var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        Directory.Delete(path);
-                        DataList.RemoveAt(selectedIndex);
-                        lv_listfile.ItemsSource = null;
-                        lv_listfile.ItemsSource = DataList;
+
+                    string[] files = Directory.EnumerateFiles(path).ToArray();
+                    if (files.Length <= 0) {
+                        var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            Directory.Delete(path);
+                            DataList.RemoveAt(selectedIndex);
+                            lv_listfile.ItemsSource = null;
+                            lv_listfile.ItemsSource = DataList;
+                        }
                     }
+                    else
+                    {
+                        MessageBox.Show($"Still have file in {DataList[selectedIndex].Name}", "Cannot Delete");
+                    }
+
+
                 }
 
                 if (IsDirectory(path) == false && File.Exists(path))

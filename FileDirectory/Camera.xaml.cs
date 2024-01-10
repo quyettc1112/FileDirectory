@@ -50,26 +50,41 @@ namespace FileDirectory
 
         private void Camera_Loaded(object sender, RoutedEventArgs e)
         {
-            videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            try {
+                videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
-            if (videoDevices.Count > 0)
+                if (videoDevices.Count > 0)
+                {
+                    videoSource = new VideoCaptureDevice((videoDevices[0].MonikerString));
+                    videoSource.NewFrame += VideoSource_NewFrame;
+                    videoSource.Start();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("No video devices found.");
+                }
+
+            } catch (Exception ex)
             {
-                videoSource = new VideoCaptureDevice((videoDevices[0].MonikerString));
-                videoSource.NewFrame += VideoSource_NewFrame;
-                videoSource.Start();
+
             }
-            else
-            {
-                System.Windows.MessageBox.Show("No video devices found.");
-            }
+
+            
         }
 
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            ig_camera.Dispatcher.Invoke(() =>
-            {
-                ig_camera.Source = ToBitmapImage(eventArgs.Frame);
-            });
+            try {
+                ig_camera.Dispatcher.Invoke(() =>
+                {
+                    ig_camera.Source = ToBitmapImage(eventArgs.Frame);
+                    currentFrame = eventArgs.Frame.Clone() as Bitmap;
+
+                });
+            }
+            catch (Exception ex) { }
+
+           
         }
 
 
@@ -94,7 +109,8 @@ namespace FileDirectory
         {
             if (videoSource != null && videoSource.IsRunning)
             {
-                videoSource.Stop();
+               videoSource.Stop();
+
             }
         }
         public class MyData
@@ -165,8 +181,6 @@ namespace FileDirectory
             };
             DataList.Clear();
 
-
-
             Winforms.FolderBrowserDialog dialog = new Winforms.FolderBrowserDialog();
             Winforms.DialogResult dialogResult = dialog.ShowDialog();
 
@@ -187,10 +201,55 @@ namespace FileDirectory
             else
             {
                 MessageBox.Show("Cancel select file", "Cancel");
-
                 DataList.Clear();
                 lv_listfolder.ItemsSource = DataList;
                 tb_folderpath.Text = "";
+            }
+        }
+
+        private void lv_listfolder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int selectedIndex = lv_listfolder.SelectedIndex;
+            string pathToOpen = DataList[selectedIndex].Path;
+
+
+            tb_folderpath.Text = pathToOpen;
+            Path = pathToOpen;
+            if (IsDirectory(Path) == true)
+            {
+                ReadFileorFolder(Path);
+            }
+        }
+
+        private void btn_capture_Click(object sender, RoutedEventArgs e)
+        {
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                // Dừng việc chụp hình tạm thời
+
+                // Kiểm tra xem folder đã được chọn chưa
+                if (!string.IsNullOrWhiteSpace(Path) &&
+                    !string.IsNullOrWhiteSpace(tb_folderpath.Text)
+                    )
+                {
+                    // Tạo đường dẫn lưu ảnh
+                    string fileName = $"snapshot_{DateTime.Now:yyyyMMddHHmmss}.png";
+                    string filePath = System.IO.Path.Combine(Path, fileName);
+
+                    currentFrame.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                    System.Windows.MessageBox.Show($"Snapshot saved to {filePath}");
+                    ReadFileorFolder(Path);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Please select a folder before capturing a snapshot.");
+                }
+
+                // Bắt đầu lại việc chụp hình từ webcam
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Webcam is not running.");
             }
         }
     }
