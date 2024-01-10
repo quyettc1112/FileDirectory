@@ -1,0 +1,46 @@
+﻿<Window x:Class="FileDirectory.Camera"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileDirectory"
+        mc:Ignorable="d"
+        Title="Camera" Height="450" Width="850">
+    <Grid>
+        <Image x:Name="ig_camera" HorizontalAlignment="Left" Height="246" Margin="474,142,0,0" VerticalAlignment="Top" Width="324"/>
+        <Button x:Name="btn_capture" Content="Capture" HorizontalAlignment="Left" Margin="594,100,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock HorizontalAlignment="Left" Margin="12,89,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top"/>
+        <TextBox x:Name="tb_folderpath" HorizontalAlignment="Left" Margin="65,88,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="378" FontSize="16"/>
+        <Button x:Name="btn_browser" Content="Browser
+" HorizontalAlignment="Left" Margin="188,52,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.5,0.5" ButtonBase.Click="btn_browser_Click"/>
+        <ListView x:Name="lv_listfolder" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="12,147,407,38">
+            <ListView.View>
+                <GridView>
+                    
+                    <GridViewColumn Header="Type" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Path=Icon}" Width="16" Height="16"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+
+                    <GridViewColumn Header="Name" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}" Margin="5,0,0,0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}"/>
+
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Back" HorizontalAlignment="Left" Margin="12,122,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+
+    </Grid>
+</Window>

@@ -44,8 +44,6 @@ namespace FileDirectory
 
             DataList = new ObservableCollection<MyData>
             {
-
-
             };
             DataList.Clear();
 
@@ -98,7 +96,130 @@ namespace FileDirectory
             public string Icon { get; set; }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+     
+        public void ReadFileorFolder(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            string[] folder = Directory.GetDirectories(path);
+            DataList.Clear();
+
+            foreach (string file in folder)
+            {
+                string[] result = file.Split('\\');
+                DataList.Add(new MyData
+                {
+                    Name = $"{result[result.Length - 1]}",
+                    Path = $"{file}",
+                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\Fileee\\vector-folder-icon.jpg"
+                });
+            };
+
+            foreach (string file in files)
+            {
+                string[] result = file.Split('\\');
+                DataList.Add(new MyData
+                {
+                    Name = $"{result[result.Length - 1]}",
+                    Path = $"{file}",
+                    Icon = "C:\\Users\\Admin\\Desktop\\PRN221\\FileeefilesIcon.jfif"
+                });
+            };
+            lv_listfile.ItemsSource = DataList;
+        }
+
+        
+
+        public static bool IsDirectory(string path)
+        {
+            try
+            {
+                // Kiểm tra xem path có phải là một thư mục không
+                FileAttributes attr = File.GetAttributes(path);
+                return (attr & FileAttributes.Directory) == FileAttributes.Directory;
+            }
+            catch (Exception)
+            {
+                // Xảy ra lỗi khi kiểm tra, giả sử không phải là thư mục
+                return false;
+            }
+        }
+
+       
+
+  
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            // C:// a/b/c
+            string[] pathArray = path.Split('\\');
+            string result = "";
+            if (pathArray.Length > 1)
+            {
+                for (int i = 0; i < pathArray.Length - 1; i++)
+                {
+                    if (i == pathArray.Length - 2)
+                    {
+                        result = result + pathArray[i];
+                    }
+                    else
+                        result = result + pathArray[i] + "\\";
+                }
+                path = result;
+                tb_filedirectory.Text = path;
+                ReadFileorFolder(path);
+            }
+        }
+
+        
+
+        private void btn_addFolder_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (path != string.Empty)
+            {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, true);
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+        }
+
+        private void btn_addFile_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBoxResult result = MessageBox.Show("Create Folder:", "Create", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (path != string.Empty)
+            {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, false);
+
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+        }
+
+        private void btn_rename_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = lv_listfile.SelectedIndex;
+            if (selectedIndex != -1)
+            {
+                var itemRename = DataList[selectedIndex];
+                Window1 newName = new Window1(itemRename.Path, itemRename.Name);
+                newName.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                newName.Show();
+            }
+        }
+
+        private void btn_delete_Click(object sender, RoutedEventArgs e)
         {
             int selectedIndex = lv_listfile.SelectedIndex;
 
@@ -133,136 +254,18 @@ namespace FileDirectory
                     }
                 }
             }
-            else {
+            else
+            {
                 MessageBox.Show("Select File To Delete", "Error");
             }
         }
 
-
-        public void ReadFileorFolder(string path)
+        private void btn_opneCamera_Click(object sender, RoutedEventArgs e)
         {
-            string[] files = Directory.GetFiles(path);
-            string[] folder = Directory.GetDirectories(path);
-            DataList.Clear();
-
-            foreach (string file in folder)
-            {
-                string[] result = file.Split('\\');
-                DataList.Add(new MyData
-                {
-                    Name = $"{result[result.Length - 1]}",
-                    Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\vector-folder-icon.jpg"
-                });
-            };
-
-            foreach (string file in files)
-            {
-                string[] result = file.Split('\\');
-                DataList.Add(new MyData
-                {
-                    Name = $"{result[result.Length - 1]}",
-                    Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\filesIcon.jfif"
-                });
-            };
-            lv_listfile.ItemsSource = DataList;
-
-
-        }
-
-        
-
-        public static bool IsDirectory(string path)
-        {
-            try
-            {
-                // Kiểm tra xem path có phải là một thư mục không
-                FileAttributes attr = File.GetAttributes(path);
-                return (attr & FileAttributes.Directory) == FileAttributes.Directory;
-            }
-            catch (Exception)
-            {
-                // Xảy ra lỗi khi kiểm tra, giả sử không phải là thư mục
-                return false;
-            }
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            int selectedIndex = lv_listfile.SelectedIndex;
-            if (selectedIndex != -1) {
-                var itemRename = DataList[selectedIndex];
-                Window1 newName = new Window1(itemRename.Path, itemRename.Name);
-                newName.Closing += (s, ea) =>
-                {
-                    ReadFileorFolder(path);
-                    tb_filedirectory.Text = path;
-                };
-                newName.Show();
-            } 
-            
-
-
-        }
-
-  
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
-
-
-            // C:// a/b/c
-            string[] pathArray = path.Split('\\');
-            string result = "";
-            if (pathArray.Length > 1)
-            {
-                for (int i = 0; i < pathArray.Length - 1; i++)
-                {
-                    if (i == pathArray.Length - 2)
-                    {
-                        result = result + pathArray[i];
-                    }
-                    else
-                        result = result + pathArray[i] + "\\";
-                }
-                path = result;
-                tb_filedirectory.Text = path;
-                ReadFileorFolder(path);
-            }
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            //MessageBoxResult result = MessageBox.Show("Create Folder:", "Create", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
-            if (path != string.Empty)
-            {
-                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, false);
-
-                nfof.Closing += (s, ea) =>
-                {
-                    ReadFileorFolder(path);
-                    tb_filedirectory.Text = path;
-                };
-                nfof.ShowDialog();
-            }
+                Camera camera = new Camera();
+                camera.ShowDialog();
+          
            
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-
-            if (path != string.Empty) {
-                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, true);
-                nfof.Closing += (s, ea) =>
-                {
-                    ReadFileorFolder(path);
-                    tb_filedirectory.Text = path;
-                };
-                nfof.ShowDialog();
-            }
-            
         }
     }
 }
