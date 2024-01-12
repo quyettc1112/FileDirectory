@@ -20,6 +20,7 @@ using System.Windows.Forms.Integration;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using Firebase.Storage;
+using System.Diagnostics;
 
 namespace FileDirectory
 {
@@ -101,32 +102,88 @@ namespace FileDirectory
             if (IsImageFile(path)) {
                 Picture pt = new Picture(path, DataList[selectedIndex].Name);
 
+                string[] pathArray = path.Split('\\');
+                string result = "";
+                if (pathArray.Length > 1)
+                {
+                    for (int i = 0; i < pathArray.Length - 1; i++)
+                    {
+                        if (i == pathArray.Length - 2)
+                        {
+                            result = result + pathArray[i];
+                        }
+                        else
+                            result = result + pathArray[i] + "\\";
+                    }
+                    path = result;
+                    
+                }
+
                 pt.Closing += (s, ea) =>
                 {
-                    string[] pathArray = path.Split('\\');
-                    string result = "";
-                    if (pathArray.Length > 1)
-                    {
-                        for (int i = 0; i < pathArray.Length - 1; i++)
-                        {
-                            if (i == pathArray.Length - 2)
-                            {
-                                result = result + pathArray[i];
-                            }
-                            else
-                                result = result + pathArray[i] + "\\";
-                        }
-                        path = result;
-                        tb_filedirectory.Text = path;
-                        ReadFileorFolder(path);
-                    }
-                };            
+                    tb_filedirectory.Text = path;
+                    ReadFileorFolder(path);
+                };     
                 pt.ShowDialog();
 
                
             }
+
+            if (CheckTxtFile(path) && path != null) {
+
+                var fileToOpen = path;
+                var process = new Process();
+                process.StartInfo = new ProcessStartInfo()
+                {
+                    UseShellExecute = true,
+                    FileName = fileToOpen
+                };
+
+                process.Start();
+               // process.WaitForExit();
+
+            }
+       
+
             
         }
+
+        public static string ReadTxtFile(string path)
+        {
+            // Mở file ở chế độ đọc
+            using (StreamReader reader = new StreamReader(path))
+            {
+                // Đọc từng dòng của file
+                string lines = reader.ReadLine();
+
+                // Trả về mảng các dòng
+                return lines;
+            }
+        }
+
+
+        public static bool CheckTxtFile(string path)
+        {
+            // Kiểm tra xem file có tồn tại không
+            if (!File.Exists(path))
+            {
+                return false;
+            }
+
+            // Mở file ở chế độ đọc
+            using (StreamReader reader = new StreamReader(path))
+            {
+                // Kiểm tra xem file có rỗng không
+                if (reader.ReadLine() == null)
+                {
+                    return false;
+                }
+            }
+
+            // File tồn tại và không rỗng
+            return true;
+        }
+
         public static bool IsImageFile(string filePath)
         {
             // Check if the file has a ".png" extension
@@ -158,6 +215,7 @@ namespace FileDirectory
                     Path = $"{file}",
                     Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\vector-folder-icon.jpg"
                 });
+                
             };
 
             foreach (string file in files)
@@ -294,16 +352,16 @@ namespace FileDirectory
                     {
                         MessageBox.Show($"Still have file in {DataList[selectedIndex].Name}", "Cannot Delete");
                     }
-
-
                 }
-
+                
                 if (IsDirectory(path) == false && File.Exists(path))
                 {
+                    //MessageBox.Show(path);
                     var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
                     if (result == MessageBoxResult.Yes)
                     {
-                        
+                        //MessageBox.Show(path);
+                       
                         File.Delete(path);
                         DataList.RemoveAt(selectedIndex);
                         lv_listfile.ItemsSource = null;
@@ -328,11 +386,11 @@ namespace FileDirectory
         private void btn_saveCloud_Click(object sender, RoutedEventArgs e)
         {
             client = new FireSharp.FirebaseClient(config);
-
-            if (client != null && path != null)
+            
+            if (client != null && path != null && DataList != null)
             {
                 int selectedIndex = lv_listfile.SelectedIndex;
-                if (IsImageFile(DataList[selectedIndex].Path) && path != null) {
+                if (IsImageFile(DataList[selectedIndex].Path) && path != null ) {
                     
                     string pathToOpen = DataList[selectedIndex].Path;
 
@@ -344,12 +402,11 @@ namespace FileDirectory
                     UploadImageToFirebaseStorage(path, DataList[selectedIndex].Name).Wait();
 
                 }
-
-              
+                else MessageBox.Show("Select Image to Save on Cloud");
             }
             else
             {
-                MessageBox.Show("Null");
+                MessageBox.Show("Select Image to Save on Cloud");
             }
         }
 
@@ -371,7 +428,92 @@ namespace FileDirectory
             MessageBox.Show("Upload Success");
             
 
+        }
 
+        private void Menu_Item_Click_AddNewFolder(object sender, RoutedEventArgs e) {
+
+            if (path != string.Empty)
+            {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, true);
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+
+        }
+
+
+        private void Menu_Item_Click_AddNewFile(object sender, RoutedEventArgs e)
+        {
+            if (path != string.Empty)
+            {
+                newFolderOrFiletxt nfof = new newFolderOrFiletxt(path, false);
+
+                nfof.Closing += (s, ea) =>
+                {
+                    ReadFileorFolder(path);
+                    tb_filedirectory.Text = path;
+                };
+                nfof.ShowDialog();
+            }
+        }
+
+        private void Menu_Item_Click_Delete(object sender, RoutedEventArgs e)
+        {
+
+
+            int selectedIndex = lv_listfile.SelectedIndex;
+
+            if (lv_listfile.SelectedIndex != -1)
+            {
+                // Lấy dường dẫn của Item
+                string path = DataList[selectedIndex].Path;
+                // Check đường dẫn nó là file hay Derictory
+
+
+                if (IsDirectory(path) && Directory.Exists(path))
+                {
+
+                    string[] files = Directory.EnumerateFiles(path).ToArray();
+                    if (files.Length <= 0)
+                    {
+                        var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            Directory.Delete(path);
+                            DataList.RemoveAt(selectedIndex);
+                            lv_listfile.ItemsSource = null;
+                            lv_listfile.ItemsSource = DataList;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Still have file in {DataList[selectedIndex].Name}", "Cannot Delete");
+                    }
+                }
+
+                if (IsDirectory(path) == false && File.Exists(path))
+                {
+                    //MessageBox.Show(path);
+                    var result = MessageBox.Show($"{DataList[selectedIndex].Name} will remove", "Info", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        //MessageBox.Show(path);
+
+                        File.Delete(path);
+                        DataList.RemoveAt(selectedIndex);
+                        lv_listfile.ItemsSource = null;
+                        lv_listfile.ItemsSource = DataList;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select File To Delete", "Error");
+            }
         }
 
 

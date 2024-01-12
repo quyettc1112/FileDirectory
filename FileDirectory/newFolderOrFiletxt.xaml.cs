@@ -52,7 +52,7 @@ namespace FileDirectory
                     using (StreamWriter sw = File.CreateText(Path + $"\\{nameFolder}")) {
                         sw.WriteLine("Đây là nội dung của tệp văn bản mới.");
                     }
-                    MessageBox.Show("Create Folder Success", "Info");
+                    MessageBox.Show("Create Files Success", "Info");
                     this.Close();
                 }
                 else
