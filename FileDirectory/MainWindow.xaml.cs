@@ -17,6 +17,9 @@ using System.IO;
 using System.Collections.ObjectModel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Windows.Forms.Integration;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using Firebase.Storage;
 
 namespace FileDirectory
 {
@@ -27,6 +30,15 @@ namespace FileDirectory
     {
 
         Winforms.FolderBrowserDialog dialog = new Winforms.FolderBrowserDialog();
+
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            AuthSecret = "pruPA0SZKcAoK6ITHBt1GAAla2xo5mQ6Z6qgj2UP",
+            BasePath = "https://imagewdf-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+
+        IFirebaseClient client;
+        BitmapImage bitmapImage = new BitmapImage();
 
         public ObservableCollection<MyData> DataList { get; set; }
         public MainWindow()
@@ -88,6 +100,27 @@ namespace FileDirectory
             }
             if (IsImageFile(path)) {
                 Picture pt = new Picture(path, DataList[selectedIndex].Name);
+
+                pt.Closing += (s, ea) =>
+                {
+                    string[] pathArray = path.Split('\\');
+                    string result = "";
+                    if (pathArray.Length > 1)
+                    {
+                        for (int i = 0; i < pathArray.Length - 1; i++)
+                        {
+                            if (i == pathArray.Length - 2)
+                            {
+                                result = result + pathArray[i];
+                            }
+                            else
+                                result = result + pathArray[i] + "\\";
+                        }
+                        path = result;
+                        tb_filedirectory.Text = path;
+                        ReadFileorFolder(path);
+                    }
+                };            
                 pt.ShowDialog();
 
                
@@ -134,7 +167,7 @@ namespace FileDirectory
                 {
                     Name = $"{result[result.Length - 1]}",
                     Path = $"{file}",
-                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\filesIcon.jfif"
+                    Icon = "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN221\\FileDirectory\\file-icon.png"
                 });
             };
             lv_listfile.ItemsSource = DataList;
@@ -291,5 +324,56 @@ namespace FileDirectory
           
            
         }
+
+        private void btn_saveCloud_Click(object sender, RoutedEventArgs e)
+        {
+            client = new FireSharp.FirebaseClient(config);
+
+            if (client != null)
+            {
+                int selectedIndex = lv_listfile.SelectedIndex;
+                if (IsImageFile(DataList[selectedIndex].Path)) {
+                    
+                    string pathToOpen = DataList[selectedIndex].Path;
+
+
+                    tb_filedirectory.Text = pathToOpen;
+                    path = pathToOpen;//MessageBox.Show(path);
+
+
+                    UploadImageToFirebaseStorage(path, DataList[selectedIndex].Name).Wait();
+
+                }
+
+              
+            }
+            else
+            {
+                MessageBox.Show("Null");
+            }
+        }
+
+        static async Task UploadImageToFirebaseStorage(string filePath, string Name)
+        { 
+            // Khởi tạo FirebaseStorage và đường dẫn trên Firebase Storage
+            FirebaseStorage firebaseStorage = new FirebaseStorage("imagewdf.appspot.com");
+
+            // Đường dẫn trên Firebase Storage
+            string firebaseStoragePath = $"images/{Name}";
+
+            var stream = File.Open(filePath, FileMode.Open);
+
+
+            var task = firebaseStorage
+                  .Child(firebaseStoragePath)
+                  .PutAsync(stream);
+            // stream.Close();
+            MessageBox.Show("Upload Success");
+            
+
+
+        }
+
+
     }
 }
