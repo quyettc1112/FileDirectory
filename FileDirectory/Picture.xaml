@@ -8,7 +8,6 @@
         Title="Picture" Height="450" Width="800">
     <Grid>
         <Image x:Name="image" Margin="44,35,392,35"/>
-        <Button x:Name="btn_SaveOnCloud" Content="Save On Cloud" HorizontalAlignment="Left" Margin="518,193,0,0" VerticalAlignment="Top" FontSize="20"/>
         <TextBlock HorizontalAlignment="Left" Margin="526,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Width="126"><Run Language="ja-jp" Text="Name Image"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
         <TextBlock x:Name="tb_name" HorizontalAlignment="Left" Margin="438,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Width="302"/>
 
