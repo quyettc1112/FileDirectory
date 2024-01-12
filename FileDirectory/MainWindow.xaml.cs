@@ -329,10 +329,10 @@ namespace FileDirectory
         {
             client = new FireSharp.FirebaseClient(config);
 
-            if (client != null)
+            if (client != null && path != null)
             {
                 int selectedIndex = lv_listfile.SelectedIndex;
-                if (IsImageFile(DataList[selectedIndex].Path)) {
+                if (IsImageFile(DataList[selectedIndex].Path) && path != null) {
                     
                     string pathToOpen = DataList[selectedIndex].Path;
 
