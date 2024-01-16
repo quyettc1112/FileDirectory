@@ -274,5 +274,10 @@ namespace FileDirectory
                 System.Windows.MessageBox.Show("Webcam is not running.");
             }
         }
+
+        private void tb_folderpath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

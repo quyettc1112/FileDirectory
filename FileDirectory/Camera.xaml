@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileDirectory"
         mc:Ignorable="d"
-        Title="Camera" Height="450" Width="850">
+        Title="Camera" Height="600" Width="1000">
     <Grid>
-        <Image x:Name="ig_camera" HorizontalAlignment="Left" Height="246" Margin="474,142,0,0" VerticalAlignment="Top" Width="324"/>
-        <Button x:Name="btn_capture" Content="Capture" HorizontalAlignment="Left" Margin="594,100,0,0" VerticalAlignment="Top" FontSize="20" Click="btn_capture_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="12,89,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb_folderpath" HorizontalAlignment="Left" Margin="65,88,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="378" FontSize="16"/>
+        <Image x:Name="ig_camera" HorizontalAlignment="Left" Height="452" Margin="571,98,0,0" VerticalAlignment="Top" Width="396"/>
+        <Button x:Name="btn_capture" Content="Capture" HorizontalAlignment="Left" Margin="757,47,0,0" VerticalAlignment="Top" FontSize="20" Click="btn_capture_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="28,40,0,0" TextWrapping="Wrap" Text="Folder" VerticalAlignment="Top"/>
+        <TextBox x:Name="tb_folderpath" HorizontalAlignment="Left" Margin="81,71,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="378" FontSize="16" TextChanged="tb_folderpath_TextChanged"/>
         <Button x:Name="btn_browser" Content="Browser
-" HorizontalAlignment="Left" Margin="188,52,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.5,0.5" ButtonBase.Click="btn_browser_Click"/>
-        <ListView x:Name="lv_listfolder" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="12,147,407,38" MouseDoubleClick="lv_listfolder_MouseDoubleClick">
+" HorizontalAlignment="Left" Margin="464,67,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.5,0.5" ButtonBase.Click="btn_browser_Click"/>
+        <ListView x:Name="lv_listfolder" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="28,98,456,160" MouseDoubleClick="lv_listfolder_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    
+
                     <GridViewColumn Header="Type" Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -40,7 +40,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Back" HorizontalAlignment="Left" Margin="12,122,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Back" HorizontalAlignment="Left" Margin="28,73,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>
 </Window>

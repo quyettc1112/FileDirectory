@@ -42,11 +42,6 @@ namespace FileDirectory
 
         BitmapImage bitmapImage = new BitmapImage();
 
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            AuthSecret= "pruPA0SZKcAoK6ITHBt1GAAla2xo5mQ6Z6qgj2UP",
-            BasePath= "https://imagewdf-default-rtdb.asia-southeast1.firebasedatabase.app/"
-        };
 
         IFirebaseClient client;
 
@@ -65,35 +60,16 @@ namespace FileDirectory
             tb_name.Text = name;
             SetImageSource(path);
 
+            Closing += Picture_Closing;
+
          
        
         }
 
-        static async Task UploadImageToFirebaseStorage(string filePath, string Name, BitmapImage bitmapImage)
+        private void Picture_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-     
-            bitmapImage.StreamSource?.Close();
             bitmapImage = null;
-
-
-            // Khởi tạo FirebaseStorage và đường dẫn trên Firebase Storage
-            FirebaseStorage firebaseStorage = new FirebaseStorage("imagewdf.appspot.com");
-
-                // Đường dẫn trên Firebase Storage
-                string firebaseStoragePath = $"images/{Name}";
-
-                 var stream = File.Open(filePath, FileMode.Open);
-                
-              
-                 var task = firebaseStorage
-                       .Child(firebaseStoragePath)
-                       .PutAsync(stream);
-           // stream.Close();
-            MessageBox.Show("Upload Success");
-            
-
         }
-
 
         private void SetImageSource(string imagePath)
         {

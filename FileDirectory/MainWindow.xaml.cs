@@ -361,7 +361,7 @@ namespace FileDirectory
                     if (result == MessageBoxResult.Yes)
                     {
                         //MessageBox.Show(path);
-                       
+                        MessageBox.Show(path);
                         File.Delete(path);
                         DataList.RemoveAt(selectedIndex);
                         lv_listfile.ItemsSource = null;
@@ -390,8 +390,8 @@ namespace FileDirectory
             if (client != null && path != null && DataList != null)
             {
                 int selectedIndex = lv_listfile.SelectedIndex;
-                if (IsImageFile(DataList[selectedIndex].Path) && path != null ) {
-                    
+                if (selectedIndex >= 0 && path != null ) {
+                    IsImageFile(DataList[selectedIndex].Path);
                     string pathToOpen = DataList[selectedIndex].Path;
 
 
